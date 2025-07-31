@@ -15,7 +15,13 @@ allowed_ids = student_df["student_id"].astype(str).tolist()
 
 # Google Sheet init
 def get_gsheet_client():
+    
     creds = Credentials.from_service_account_file(CREDS_FILE, scopes=SCOPE)
+    import json
+    from google.auth.transport.requests import Request
+    creds_dict = json.loads(st.secrets["GOOGLE_CREDENTIALS"])
+    creds = Credentials.from_service_account_info(creds_dict, scopes=SCOPE)
+   
     return gspread.authorize(creds)
 
 def save_vote_to_sheet(student_id, votes):
